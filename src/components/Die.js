@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ReactTooltip from "react-tooltip";
 
 const Die = ({ number, isBloodDie }) => {
@@ -30,17 +31,22 @@ const Die = ({ number, isBloodDie }) => {
 
   const imageName = imageDict[isBloodDie ? "bloodDie" : "normalDie"][number];
 
+  const [tooltip, showTooltip] = useState(true);
+
   return (
     <div>
+      {tooltip && <ReactTooltip effect="solid" />}
       <img
-        data-tip
         src={"diceSides/" + imageName}
         className="dieImage"
         alt="die"
+        data-tip={number}
+        onMouseEnter={() => showTooltip(true)}
+        onMouseLeave={() => {
+          showTooltip(false);
+          setTimeout(() => showTooltip(true), 50);
+        }}
       />
-      <ReactTooltip id="dieTip" place="top" effect="solid">
-        {number}
-      </ReactTooltip>
     </div>
   );
 };
